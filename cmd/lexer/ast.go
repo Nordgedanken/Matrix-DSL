@@ -11,16 +11,16 @@ type Section struct {
 }
 
 type PropertyArrays struct {
-	Key     string   `@Ident ":"`
-	Arrays  []*Array `[ { @@ } ]`
-	Value   *Value   `[ | @@ ]`
-	Special *Special `[ | @@ ]`
+	Key    string   `@Ident ":"`
+	Arrays []*Array `[ { @@ } ]`
+	Value  *Value   `[ | @@ ]`
+	Event  *string  `[ | "["@Ident"]" ]`
 }
 
 type Property struct {
-	Key     string   `@Ident ":"`
-	Value   *Value   `| @@`
-	Special *Special `| @@`
+	Key   string  `@Ident ":"`
+	Value *Value  `[ @@ ]`
+	Event *string `[ | "["@Ident"]" ]`
 }
 
 type Array struct {
@@ -31,8 +31,4 @@ type Array struct {
 type Value struct {
 	String *string  ` @String`
 	Number *float64 `| @Float`
-}
-
-type Special struct {
-	Key *string `"["@Ident"]"`
 }
