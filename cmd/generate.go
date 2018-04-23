@@ -15,12 +15,11 @@
 package cmd
 
 import (
-	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/Nordgedanken/matrix_dsl/cmd/lexer"
 	"github.com/alecthomas/participle"
 	"github.com/spf13/cobra"
-	"log"
 	"os"
 )
 
@@ -42,7 +41,6 @@ to quickly create a Cobra application.`,
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		parser, err := participle.Build(&lexer.Matrix{}, nil)
-		log.Println(parser.String())
 		if err != nil {
 			return err
 		}
@@ -58,10 +56,61 @@ to quickly create a Cobra application.`,
 			return err
 		}
 
-		enc := json.NewEncoder(os.Stdout)
-		enc.SetIndent("", "  ")
-		return enc.Encode(mx)
+		printMX(mx)
+		return nil
 	},
+}
+
+//printMX is a temporary pretty print of the generated AST
+func printMX(mx *lexer.Matrix) error {
+	if mx.Properties != nil {
+	} else {
+		fmt.Println("No Properties found")
+	}
+	if mx.Sections != nil {
+		for _, s := range mx.Sections {
+			fmt.Println("Section Name: ", s.Identifier)
+			if s.Properties != nil {
+				for _, p := range s.Properties {
+					fmt.Printf("[%s] Prop Key: %s\n", s.Identifier, p.Key)
+					if p.Event != nil {
+						fmt.Printf("[%s] Event: %s\n", s.Identifier, *p.Event)
+					}
+					if p.Value != nil && p.Value.String != nil {
+						fmt.Printf("[%s] Value: %s\n", s.Identifier, *p.Value.String)
+					}
+					if p.Arrays != nil {
+						for i, a := range p.Arrays {
+							fmt.Printf("[%s][%s][%d] Array Index: %d\n", s.Identifier, p.Key, i, i)
+							if a.Key != "" {
+								return errors.New("array key should always be empty")
+							}
+							if a.Properties != nil {
+								for _, ap := range a.Properties {
+									fmt.Printf("[%s][%s][%d] Prop Key: %s\n", s.Identifier, p.Key, i, ap.Key)
+									if ap.Event != nil {
+										fmt.Printf("[%s][%s][%d] Event: %s\n", s.Identifier, p.Key, i, *ap.Event)
+									}
+									if ap.Value != nil && ap.Value.String != nil {
+										fmt.Printf("[%s][%s][%d] Value: %s\n", s.Identifier, p.Key, i, *ap.Value.String)
+									}
+								}
+							} else {
+								fmt.Printf("[%s][%s] No Arrays found\n", s.Identifier, p.Key)
+							}
+						}
+					} else {
+						fmt.Printf("[%s][%s] No Arrays found\n", s.Identifier, p.Key)
+					}
+				}
+			} else {
+				fmt.Printf("[%s] No Properties found\n", s.Identifier)
+			}
+		}
+	} else {
+		fmt.Println("No Sections found")
+	}
+	return nil
 }
 
 func init() {

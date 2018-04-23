@@ -29,6 +29,5 @@ type Array struct {
 }
 
 type Value struct {
-	String *string  ` @String`
-	Number *float64 `| @Float`
+	String *string ` @String`
 }
