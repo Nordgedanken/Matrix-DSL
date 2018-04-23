@@ -1,10 +1,8 @@
 package js
 
 import (
-	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/Nordgedanken/matrix_dsl/cmd/lexer"
 	"io/ioutil"
 	"os"
@@ -43,13 +41,10 @@ func GenerateBot(mx *lexer.Section) error {
 
 	cmd := exec.Command("npm", "install", "--save", "matrix-bot-sdk")
 	cmd.Dir = "./js_project"
-	var out bytes.Buffer
-	cmd.Stdout = &out
 	err = cmd.Run()
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Output: %q\n", out.String())
 	return nil
 }
 
