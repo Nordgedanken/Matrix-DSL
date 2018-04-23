@@ -1,6 +1,8 @@
 [[BOT]]
-Name:"Test Bot"
-Prefix:"!"
+Name: "Test Bot"
+Description: "Some Demo Bot"
+Prefix: "!"
+Autojoin: "true"
 Commands:
     - Trigger: "afk"
       Response: "{{user}} just went afk"

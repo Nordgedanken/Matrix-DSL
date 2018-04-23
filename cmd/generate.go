@@ -17,6 +17,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"github.com/Nordgedanken/matrix_dsl/cmd/generator/js"
 	"github.com/Nordgedanken/matrix_dsl/cmd/lexer"
 	"github.com/alecthomas/participle"
 	"github.com/spf13/cobra"
@@ -57,6 +58,14 @@ to quickly create a Cobra application.`,
 		}
 
 		printMX(mx)
+
+		for _, v := range mx.Sections {
+			if v.Identifier == "BOT" {
+				js.GenerateBot(mx.Sections[0])
+			} else {
+				return errors.New("unknown Section type")
+			}
+		}
 		return nil
 	},
 }

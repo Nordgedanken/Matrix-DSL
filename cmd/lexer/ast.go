@@ -30,4 +30,5 @@ type Array struct {
 
 type Value struct {
 	String *string ` @String`
+	Bool   *string `| @String`
 }
