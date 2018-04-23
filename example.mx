@@ -1,0 +1,10 @@
+[[BOT]]
+Name:"Test Bot"
+Prefix:"!"
+Commands:
+    - Trigger: "afk"
+      Response: "{{user}} just went afk"
+    - Trigger: [join_event]
+      Response: "Welcome to the Room {{last_joined_user}}"
+Homeserver: "matrix.org"
+HomeRoom: "{{name}}"
