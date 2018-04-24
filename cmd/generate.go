@@ -41,7 +41,7 @@ to quickly create a Cobra application.`,
 		return nil
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
-		parser, err := participle.Build(&lexer.Matrix{}, nil)
+		parser, err := participle.Build(&lexer.Matrix{}, lexer.MatrixDefinition)
 		if err != nil {
 			return err
 		}
